@@ -39,7 +39,10 @@ jobs:
     name: Prerelease
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
     needs:
       - test
 
@@ -51,10 +54,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Configure CodeArtifact Token
+        run: |
+          echo CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain selma --domain-owner 801094922828 --query authorizationToken --output text --region eu-north-1) >> $GITHUB_ENV
       - name: Check release is desired
         id: do-publish
         run: |
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+          if [ -z "${{ secrets.AWS_ROLE_ARN }}" ]; then
             echo "No Token"
           elif [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
             echo "Publish nightly"
@@ -74,8 +85,8 @@ jobs:
       - name: Bump version and build
         if: ${{ steps.do-publish.outputs.publish }}
         run: |
-          git config --global user.email "info@superfly.tv"
-          git config --global user.name "superflytvab"
+          git config --global user.email "chandrashekar.nallamilli@tv2.no"
+          git config --global user.name "chandrashekar-nallamilli"
 
           COMMIT_TIMESTAMP=$(git log -1 --pretty=format:%ct HEAD)
           COMMIT_DATE=$(date -d @$COMMIT_TIMESTAMP +%Y%m%d-%H%M%S)
@@ -84,13 +95,14 @@ jobs:
           yarn release:bump-prerelease --no-changelog --no-commit-hooks --preid "$PRERELEASE_TAG-$COMMIT_DATE-$GIT_HASH" prerelease --yes
         env:
           CI: true
-      - name: Publish to NPM
+      - name: Publish to Code Artifatct
         if: ${{ steps.do-publish.outputs.publish }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          git checkout .yarnrc.yml
+          aws codeartifact login --tool npm --repository selma-store --domain selma --domain-owner ${{ secrets.AWS_ACCOUNT_ID }} --region ${{ secrets.AWS_REGION }} 
           yarn lerna publish from-package --tag-version-prefix='' --dist-tag ${{ steps.do-publish.outputs.publish }} --yes --no-verify-access
-
           NEW_VERSION=$(node -p "require('./packages/timeline-state-resolver/package.json').version")
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "**Published:** $NEW_VERSION" >> $GITHUB_STEP_SUMMARY
         env:
           CI: true

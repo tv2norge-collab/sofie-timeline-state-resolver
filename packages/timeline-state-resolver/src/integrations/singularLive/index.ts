@@ -54,7 +54,7 @@ const SINGULAR_LIVE_API = 'https://app.singular.live/apiv2/controlapps/'
  */
 export class SingularLiveDevice extends Device<SingularLiveOptions, SingularLiveState, SingularLiveCommandContext> {
 	readonly actions: {
-		[id: string]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id: string]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {}
 
 	private _accessToken: string | undefined

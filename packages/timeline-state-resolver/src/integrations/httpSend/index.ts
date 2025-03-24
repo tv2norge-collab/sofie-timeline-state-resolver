@@ -57,10 +57,10 @@ export class HTTPSendDevice extends Device<HTTPSendOptions, HttpSendDeviceState,
 		}
 	}
 	readonly actions: {
-		[id in HttpSendActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult<any>>
+		[id in HttpSendActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult<any>>
 	} = {
-		[HttpSendActions.Resync]: async (_id) => this.executeResyncAction(),
-		[HttpSendActions.SendCommand]: async (_id: string, payload?: Record<string, any>) =>
+		[HttpSendActions.Resync]: async () => this.executeResyncAction(),
+		[HttpSendActions.SendCommand]: async (payload?: Record<string, any>) =>
 			this.executeSendCommandAction(payload as HTTPSendCommandContent | undefined),
 	}
 

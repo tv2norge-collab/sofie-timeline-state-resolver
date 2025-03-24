@@ -25,7 +25,7 @@ import { Device } from '../../service/device'
  */
 export class HyperdeckDevice extends Device<HyperdeckOptions, HyperdeckDeviceState, HyperdeckCommandWithContext> {
 	readonly actions: {
-		[id in HyperdeckActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id in HyperdeckActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {
 		[HyperdeckActions.FormatDisks]: this.formatDisks.bind(this),
 		[HyperdeckActions.Resync]: this.resyncState.bind(this),

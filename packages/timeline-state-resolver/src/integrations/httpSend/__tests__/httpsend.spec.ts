@@ -374,7 +374,7 @@ describe('HTTP-Send', () => {
 		test('Send action', async () => {
 			const device = await getInitialisedHttpDevice()
 
-			const result = await device.actions[HttpSendActions.SendCommand](HttpSendActions.SendCommand, {
+			const result = await device.actions[HttpSendActions.SendCommand]({
 				...DEFAULT_TL_CONTENT,
 				type: TimelineContentTypeHTTP.GET,
 				url: 'http://testurl',

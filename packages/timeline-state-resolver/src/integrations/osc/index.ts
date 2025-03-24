@@ -221,7 +221,7 @@ export class OscDevice extends Device<OSCOptions, OscDeviceState, OscCommandWith
 		}
 	}
 
-	readonly actions: Record<string, (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
+	readonly actions: Record<string, (payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
 
 	private _oscSender(msg: osc.OscMessage, address?: string | undefined, port?: number | undefined): void {
 		this.context.logger.debug('sending ' + msg.address)

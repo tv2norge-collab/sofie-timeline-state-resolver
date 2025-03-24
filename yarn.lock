@@ -11029,11 +11029,11 @@ asn1@evs-broadcast/node-asn1:
   linkType: hard
 
 "superfly-timeline@npm:^9.0.1":
-  version: 9.0.2
-  resolution: "superfly-timeline@npm:9.0.2"
+  version: 9.0.3
+  resolution: "superfly-timeline@npm:9.0.3"
   dependencies:
     tslib: ^2.6.0
-  checksum: d628d467d5384f5667bc10b877478c5b8b0a91774b5d5c5e9d9d3134b8f1b760225f2fbbb0f9ccd3e55f930c9f3719f81b9347b94ea853fbc0a18bc121d97665
+  checksum: 4b05bbcb596453db324f2b769bbd5113a303450e581236fa3fae1d01e46e71b7532e8d0f8159ff3fb9a827309143534502f50d6c4082a260ff365faa6d47d542
   languageName: node
   linkType: hard
 

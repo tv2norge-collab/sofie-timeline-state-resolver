@@ -42,7 +42,7 @@ export interface MultiOscCommandWithContext extends CommandWithContext {
  * This is a generic wrapper for any osc-enabled device.
  */
 export class MultiOSCMessageDevice extends Device<MultiOSCOptions, MultiOSCDeviceState, MultiOscCommandWithContext> {
-	readonly actions: Record<string, (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
+	readonly actions: Record<string, (payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
 
 	private _connections: Record<string, OSCConnection> = {}
 	private _commandQueue: Array<MultiOscCommandWithContext> = []

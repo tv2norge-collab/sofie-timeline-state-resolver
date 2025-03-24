@@ -193,7 +193,7 @@ export class QuantelDevice extends Device<QuantelOptions, QuantelState, QuantelC
 	}
 
 	readonly actions: {
-		[id in QuantelActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id in QuantelActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {
 		[QuantelActions.ClearStates]: async () => {
 			this.context.resetResolver()

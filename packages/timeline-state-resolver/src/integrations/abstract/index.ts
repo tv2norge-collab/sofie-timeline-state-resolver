@@ -26,7 +26,7 @@ export type AbstractDeviceState = Timeline.TimelineState<TSRTimelineContent>
 */
 export class AbstractDevice extends Device<AbstractOptions, AbstractDeviceState, AbstractCommandWithContext> {
 	readonly actions: {
-		[id in AbstractActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id in AbstractActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {
 		[AbstractActions.TestAction]: async () => {
 			// noop

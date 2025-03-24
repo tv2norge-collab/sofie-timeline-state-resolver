@@ -26,7 +26,7 @@ interface CommandContent {
  */
 export class PharosDevice extends Device<PharosOptions, PharosState, PharosCommandWithContext> {
 	readonly actions: {
-		[id: string]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id: string]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {}
 
 	private _pharos: Pharos

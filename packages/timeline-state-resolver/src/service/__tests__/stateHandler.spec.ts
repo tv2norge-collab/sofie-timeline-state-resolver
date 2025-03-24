@@ -76,17 +76,11 @@ describe('stateHandler', () => {
 	test('transition to a new state', async () => {
 		const stateHandler = getNewStateHandler()
 
-		stateHandler
-			.setCurrentState({
-				entry1: { value: true },
-			})
-			.catch((e) => {
-				console.error('Error while setting current state', e)
-			})
-
-		stateHandler.handleState(createTimelineState(10000, {}), {}).catch((e) => {
-			console.error('Error while handling state', e)
+		stateHandler.setCurrentState({
+			entry1: { value: true },
 		})
+
+		stateHandler.handleState(createTimelineState(10000, {}), {})
 
 		await mockTime.tick()
 
@@ -102,17 +96,11 @@ describe('stateHandler', () => {
 	test('transition to 2 new states', async () => {
 		const stateHandler = getNewStateHandler()
 
-		stateHandler
-			.setCurrentState({
-				entry1: { value: true },
-			})
-			.catch((e) => {
-				console.error('Error while setting current state', e)
-			})
-
-		stateHandler.handleState(createTimelineState(10000, {}), {}).catch((e) => {
-			console.error('Error while handling state', e)
+		stateHandler.setCurrentState({
+			entry1: { value: true },
 		})
+
+		stateHandler.handleState(createTimelineState(10000, {}), {})
 
 		await mockTime.tick()
 
@@ -124,16 +112,12 @@ describe('stateHandler', () => {
 			},
 		})
 
-		stateHandler
-			.handleState(
-				createTimelineState(10100, {
-					entry1: { value: true },
-				}),
-				{}
-			)
-			.catch((e) => {
-				console.error('Error while handling state', e)
-			})
+		stateHandler.handleState(
+			createTimelineState(10100, {
+				entry1: { value: true },
+			}),
+			{}
+		)
 
 		await mockTime.tick()
 
@@ -157,26 +141,20 @@ describe('stateHandler', () => {
 	test('transition to a new state with preliminary commands', async () => {
 		const stateHandler = getNewStateHandler()
 
-		stateHandler.setCurrentState({}).catch((e) => {
-			console.error('Error while setting current state', e)
-		})
+		stateHandler.setCurrentState({})
 
-		stateHandler
-			.handleState(
-				createTimelineState(12000, {
-					entry1: {
-						value: true,
-						preliminary: 300,
-					},
-					entry2: {
-						value: true,
-					},
-				}),
-				{}
-			)
-			.catch((e) => {
-				console.error('Error while handling state', e)
-			})
+		stateHandler.handleState(
+			createTimelineState(12000, {
+				entry1: {
+					value: true,
+					preliminary: 300,
+				},
+				entry2: {
+					value: true,
+				},
+			}),
+			{}
+		)
 
 		await mockTime.tick()
 

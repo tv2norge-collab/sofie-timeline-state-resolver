@@ -330,3 +330,7 @@ export function interpolateTemplateStringIfNeeded(str: string | TemplateString):
 	if (typeof str === 'string') return str
 	return interpolateTemplateString(str.key, str.args)
 }
+
+export type PromisifyResult<T> = {
+	[K in keyof T]: T[K] extends (arg: infer P) => infer R ? (arg: P) => Promise<ActionExecutionResult<R>> : never
+}

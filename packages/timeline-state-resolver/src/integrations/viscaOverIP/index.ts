@@ -68,20 +68,20 @@ export class ViscaOverIpDevice extends Device<ViscaOverIPOptions, ViscaDeviceSta
 		}
 	}
 
-	actions: { [id in ViscaOverIPActions]: (id: string, payload?: any) => Promise<ActionExecutionResult> } = {
-		[ViscaOverIPActions.RecallPreset]: async (_id: string, payload: RecallPresetPayload) => {
+	actions: { [id in ViscaOverIPActions]: (payload?: any) => Promise<ActionExecutionResult> } = {
+		[ViscaOverIPActions.RecallPreset]: async (payload: RecallPresetPayload) => {
 			const presetCommand = new PresetCommand(ConnectionEnums.PresetOperation.Recall, payload.presetNumber)
 			return this.safelySendActionCommand(presetCommand)
 		},
-		[ViscaOverIPActions.StorePreset]: async (_id: string, payload: StorePresetPayload) => {
+		[ViscaOverIPActions.StorePreset]: async (payload: StorePresetPayload) => {
 			const presetCommand = new PresetCommand(ConnectionEnums.PresetOperation.Set, payload.presetNumber)
 			return this.safelySendActionCommand(presetCommand)
 		},
-		[ViscaOverIPActions.ResetPreset]: async (_id: string, payload: ResetPresetPayload) => {
+		[ViscaOverIPActions.ResetPreset]: async (payload: ResetPresetPayload) => {
 			const presetCommand = new PresetCommand(ConnectionEnums.PresetOperation.Reset, payload.presetNumber)
 			return this.safelySendActionCommand(presetCommand)
 		},
-		[ViscaOverIPActions.SetPanTiltSpeed]: async (_id: string, payload: SetPanTiltSpeedPayload) => {
+		[ViscaOverIPActions.SetPanTiltSpeed]: async (payload: SetPanTiltSpeedPayload) => {
 			const panTiltCommand = new PanTiltDriveCommand(
 				this.converter.mapPanTiltSpeedToViscaDirection(payload.panSpeed, payload.tiltSpeed),
 				this.converter.mapPanTiltSpeedToVisca(payload.panSpeed),
@@ -89,43 +89,43 @@ export class ViscaOverIpDevice extends Device<ViscaOverIPOptions, ViscaDeviceSta
 			)
 			return this.safelySendActionCommand(panTiltCommand)
 		},
-		[ViscaOverIPActions.GetPanTiltPosition]: async (_id: string) =>
+		[ViscaOverIPActions.GetPanTiltPosition]: async () =>
 			this.safelyExecuteCommand(async () =>
 				this.converter.mapPanTiltPositionFromVisca(
 					await this.connection!.sendCommand(new PanTiltPositionInquiryCommand())
 				)
 			),
-		[ViscaOverIPActions.SetZoomSpeed]: async (_id: string, payload: SetZoomSpeedPayload) => {
+		[ViscaOverIPActions.SetZoomSpeed]: async (payload: SetZoomSpeedPayload) => {
 			const zoomCommand = new ZoomCommand(
 				this.converter.mapZoomSpeedToViscaDirection(payload.zoomSpeed),
 				this.converter.mapZoomSpeedToVisca(payload.zoomSpeed)
 			)
 			return this.safelySendActionCommand(zoomCommand)
 		},
-		[ViscaOverIPActions.GetZoomPosition]: async (_id: string) =>
+		[ViscaOverIPActions.GetZoomPosition]: async () =>
 			this.safelyExecuteCommand(async () =>
 				this.converter.mapZoomPositionFromVisca(await this.connection!.sendCommand(new ZoomPositionInquiryCommand()))
 			),
-		[ViscaOverIPActions.SetFocusSpeed]: async (_id: string, payload: SetFocusSpeedPayload) => {
+		[ViscaOverIPActions.SetFocusSpeed]: async (payload: SetFocusSpeedPayload) => {
 			const focusCommand = new FocusCommand(
 				this.converter.mapFocusSpeedToViscaDirection(payload.focusSpeed),
 				this.converter.mapFocusSpeedToVisca(payload.focusSpeed)
 			)
 			return this.safelySendActionCommand(focusCommand)
 		},
-		[ViscaOverIPActions.SetFocusMode]: async (_id: string, payload: SetFocusModePayload) => {
+		[ViscaOverIPActions.SetFocusMode]: async (payload: SetFocusModePayload) => {
 			const focusCommand = new FocusModeCommand(this.converter.mapFocusModeToVisca(payload.mode))
 			return this.safelySendActionCommand(focusCommand)
 		},
-		[ViscaOverIPActions.TriggerOnePushFocus]: async (_id: string) => {
+		[ViscaOverIPActions.TriggerOnePushFocus]: async () => {
 			const focusCommand = new FocusOnePushTriggerCommand()
 			return this.safelySendActionCommand(focusCommand)
 		},
-		[ViscaOverIPActions.GetFocusPosition]: async (_id: string) =>
+		[ViscaOverIPActions.GetFocusPosition]: async () =>
 			this.safelyExecuteCommand(async () =>
 				this.converter.mapFocusPositionFromVisca(await this.connection!.sendCommand(new FocusPositionInquiryCommand()))
 			),
-		[ViscaOverIPActions.GetFocusMode]: async (_id: string) =>
+		[ViscaOverIPActions.GetFocusMode]: async () =>
 			this.safelyExecuteCommand(async () =>
 				this.converter.mapFocusModeFromVisca(await this.connection!.sendCommand(new FocusModeInquiryCommand()))
 			),

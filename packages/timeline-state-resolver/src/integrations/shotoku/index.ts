@@ -173,5 +173,5 @@ export class ShotokuDevice extends Device<ShotokuOptions, ShotokuDeviceState, Sh
 		}
 	}
 
-	readonly actions: Record<string, (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
+	readonly actions: Record<string, (payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
 }

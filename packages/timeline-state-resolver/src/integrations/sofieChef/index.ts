@@ -48,7 +48,7 @@ const RECONNECT_WAIT_TIME = 5000
  */
 export class SofieChefDevice extends Device<SofieChefOptions, SofieChefState, SofieChefCommandWithContext> {
 	readonly actions: {
-		[id in SofieChefActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id in SofieChefActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {
 		[SofieChefActions.RestartAllWindows]: async () =>
 			this.restartAllWindows()
@@ -56,7 +56,7 @@ export class SofieChefDevice extends Device<SofieChefOptions, SofieChefState, So
 					result: ActionExecutionResultCode.Ok,
 				}))
 				.catch(() => ({ result: ActionExecutionResultCode.Error })),
-		[SofieChefActions.RestartWindow]: async (_id, payload) => {
+		[SofieChefActions.RestartWindow]: async (payload) => {
 			if (!payload?.windowId) {
 				return { result: ActionExecutionResultCode.Error, response: t('Missing window id') }
 			}

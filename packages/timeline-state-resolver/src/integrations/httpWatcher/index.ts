@@ -15,7 +15,7 @@ type HTTPWatcherDeviceState = Record<string, never>
  * it's response.
  */
 export class HTTPWatcherDevice extends Device<HTTPWatcherOptions, HTTPWatcherDeviceState, CommandWithContext> {
-	readonly actions: Record<string, (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
+	readonly actions: Record<string, (payload?: Record<string, any>) => Promise<ActionExecutionResult>> = {}
 
 	private uri?: string
 	/** Setup in init */

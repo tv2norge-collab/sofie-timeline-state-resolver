@@ -143,7 +143,7 @@ export class DeviceInstanceWrapper extends EventEmitter<DeviceInstanceEvents> {
 			return actionNotFoundMessage(id as never)
 		}
 
-		return action(id, payload)
+		return action.call(this._device.actions, payload)
 	}
 
 	async makeReady(okToDestroyStuff?: boolean): Promise<void> {
@@ -161,9 +161,7 @@ export class DeviceInstanceWrapper extends EventEmitter<DeviceInstanceEvents> {
 	}
 
 	handleState(newState: Timeline.TimelineState<TSRTimelineContent>, newMappings: Mappings) {
-		this._stateHandler.handleState(newState, newMappings).catch((e) => {
-			this.emit('error', 'Error while handling state', e)
-		})
+		this._stateHandler.handleState(newState, newMappings)
 
 		this._isActive = Object.keys(newMappings).length > 0
 	}
@@ -262,15 +260,19 @@ export class DeviceInstanceWrapper extends EventEmitter<DeviceInstanceEvents> {
 			},
 
 			resetState: async () => {
-				await this._stateHandler.setCurrentState(undefined)
-				await this._stateHandler.clearFutureStates()
+				this._stateHandler.setCurrentState(undefined)
+				this._stateHandler.clearFutureStates()
 				this.emit('resyncStates')
 			},
 
 			resetToState: async (state: any) => {
-				await this._stateHandler.setCurrentState(state)
-				await this._stateHandler.clearFutureStates()
+				this._stateHandler.setCurrentState(state)
+				this._stateHandler.clearFutureStates()
 				this.emit('resyncStates')
+			},
+
+			getCurrentState: async () => {
+				return this._stateHandler.getCurrentState()
 			},
 		}
 	}

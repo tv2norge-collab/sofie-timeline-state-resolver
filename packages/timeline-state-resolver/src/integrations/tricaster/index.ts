@@ -26,7 +26,7 @@ export class TriCasterDevice extends Device<
 	TriCasterCommandWithContext
 > {
 	readonly actions: {
-		[id: string]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id: string]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {}
 
 	private _connected = false

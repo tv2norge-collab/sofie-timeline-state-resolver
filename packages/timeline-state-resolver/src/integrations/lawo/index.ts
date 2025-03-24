@@ -94,6 +94,6 @@ export class LawoDevice extends Device<LawoOptions, LawoState, LawoCommandWithCo
 	}
 
 	readonly actions: {
-		[id: string]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id: string]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {}
 }

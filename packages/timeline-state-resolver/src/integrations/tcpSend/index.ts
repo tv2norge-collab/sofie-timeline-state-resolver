@@ -61,7 +61,7 @@ export class TcpSendDevice extends Device<TCPSendOptions, TcpSendDeviceState, Tc
 	}
 
 	readonly actions: {
-		[id in TcpSendActions]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id in TcpSendActions]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {
 		[TcpSendActions.Reconnect]: async () => {
 			await this.tcpConnection.reconnect()
@@ -71,7 +71,7 @@ export class TcpSendDevice extends Device<TCPSendOptions, TcpSendDeviceState, Tc
 			await this.actionResetState()
 			return { result: ActionExecutionResultCode.Ok }
 		},
-		[TcpSendActions.SendTcpCommand]: async (_id: string, payload?: Record<string, any>) => {
+		[TcpSendActions.SendTcpCommand]: async (payload?: Record<string, any>) => {
 			return this.actionSendTcpCommand(payload as TcpSendCommandContent | undefined)
 		},
 	}

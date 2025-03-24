@@ -6,9 +6,7 @@ import { DeviceOptionsAnyInternal } from '../conductor'
 import { DeviceContainer } from '..//devices/deviceContainer'
 import { assertNever } from 'atem-connection/dist/lib/atemUtil'
 import { CasparCGDevice, DeviceOptionsCasparCGInternal } from '../integrations/casparCG'
-import { DeviceOptionsSisyfosInternal, SisyfosMessageDevice } from '../integrations/sisyfos'
 import { DeviceOptionsVizMSEInternal, VizMSEDevice } from '../integrations/vizMSE'
-import { DeviceOptionsVMixInternal, VMixDevice } from '../integrations/vmix'
 import { ImplementedServiceDeviceTypes } from './devices'
 import { EventEmitter } from 'eventemitter3'
 import { DeviceInstanceEvents } from './DeviceInstance'
@@ -391,15 +389,6 @@ function createContainer(
 				getCurrentTime,
 				threadedClassOptions
 			)
-		case DeviceType.SISYFOS:
-			return DeviceContainer.create<DeviceOptionsSisyfosInternal, typeof SisyfosMessageDevice>(
-				'../../dist/integrations/sisyfos/index.js',
-				'SisyfosMessageDevice',
-				deviceId,
-				deviceOptions,
-				getCurrentTime,
-				threadedClassOptions
-			)
 		case DeviceType.VIZMSE:
 			return DeviceContainer.create<DeviceOptionsVizMSEInternal, typeof VizMSEDevice>(
 				'../../dist/integrations/vizMSE/index.js',
@@ -410,14 +399,6 @@ function createContainer(
 				threadedClassOptions
 			)
 		case DeviceType.VMIX:
-			return DeviceContainer.create<DeviceOptionsVMixInternal, typeof VMixDevice>(
-				'../../dist/integrations/vmix/index.js',
-				'VMixDevice',
-				deviceId,
-				deviceOptions,
-				getCurrentTime,
-				threadedClassOptions
-			)
 		case DeviceType.SINGULAR_LIVE:
 		case DeviceType.TELEMETRICS:
 		case DeviceType.PHAROS:
@@ -432,6 +413,7 @@ function createContainer(
 		case DeviceType.OSC:
 		case DeviceType.PANASONIC_PTZ:
 		case DeviceType.SHOTOKU:
+		case DeviceType.SISYFOS:
 		case DeviceType.SOFIE_CHEF:
 		case DeviceType.TCPSEND:
 		case DeviceType.TRICASTER:

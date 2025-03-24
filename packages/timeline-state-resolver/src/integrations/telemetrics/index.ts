@@ -29,7 +29,7 @@ interface TelemetricsCommandWithContext extends CommandWithContext {
  */
 export class TelemetricsDevice extends Device<TelemetricsOptions, TelemetricsState, TelemetricsCommandWithContext> {
 	readonly actions: {
-		[id: string]: (id: string, payload?: Record<string, any>) => Promise<ActionExecutionResult>
+		[id: string]: (payload?: Record<string, any>) => Promise<ActionExecutionResult>
 	} = {}
 
 	private socket: Socket | undefined

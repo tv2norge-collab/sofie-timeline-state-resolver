@@ -135,19 +135,28 @@ export interface SavePresetPayload {
 	filename: string
 }
 
+export interface BrowserReloadPayload {
+	/**
+	 * Input name or number
+	 */
+	input: number | string
+}
+
 export enum VmixActions {
 	LastPreset = 'lastPreset',
 	OpenPreset = 'openPreset',
 	SavePreset = 'savePreset',
 	StartExternal = 'startExternal',
-	StopExternal = 'stopExternal'
+	StopExternal = 'stopExternal',
+	BrowserReload = 'browserReload'
 }
 export interface VmixActionExecutionResults {
 	lastPreset: () => void,
 	openPreset: (payload: OpenPresetPayload) => void,
 	savePreset: (payload: SavePresetPayload) => void,
 	startExternal: () => void,
-	stopExternal: () => void
+	stopExternal: () => void,
+	browserReload: (payload: BrowserReloadPayload) => void
 }
 export type VmixActionExecutionPayload<A extends keyof VmixActionExecutionResults> = Parameters<
 	VmixActionExecutionResults[A]

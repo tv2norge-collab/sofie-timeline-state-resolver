@@ -228,6 +228,10 @@ export interface VMixStateCommandBrowserNavigate extends VMixStateCommandBase {
 	input: string | number
 	value: string
 }
+export interface VMixStateCommandBrowserReload extends VMixStateCommandBase {
+	command: VMixCommand.BROWSER_RELOAD
+	input: string | number
+}
 export interface VMixStateCommanSelectIndex extends VMixStateCommandBase {
 	command: VMixCommand.SELECT_INDEX
 	input: string | number
@@ -289,6 +293,7 @@ export type VMixStateCommand =
 	| VMixStateCommandRestart
 	| VMixStateCommandSetText
 	| VMixStateCommandBrowserNavigate
+	| VMixStateCommandBrowserReload
 	| VMixStateCommanSelectIndex
 	| VMixStateCommandSetImage
 

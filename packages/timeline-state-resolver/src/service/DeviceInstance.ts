@@ -210,7 +210,7 @@ export class DeviceInstanceWrapper extends EventEmitter<DeviceInstanceEvents> {
 		return Date.now() + (this._tDiff ?? 0)
 	}
 
-	private _getDeviceContextAPI(): DeviceContextAPI<any> {
+	private _getDeviceContextAPI(): DeviceContextAPI<unknown> {
 		return {
 			logger: {
 				error: (context: string, err: Error) => {
@@ -271,7 +271,7 @@ export class DeviceInstanceWrapper extends EventEmitter<DeviceInstanceEvents> {
 				this.emit('resyncStates')
 			},
 
-			getCurrentState: async () => {
+			getCurrentState: () => {
 				return this._stateHandler.getCurrentState()
 			},
 		}

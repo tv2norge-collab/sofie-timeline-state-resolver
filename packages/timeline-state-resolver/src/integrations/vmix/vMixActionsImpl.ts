@@ -3,6 +3,7 @@ import {
 	ActionExecutionResultCode,
 	OpenPresetPayload,
 	SavePresetPayload,
+	BrowserReloadPayload,
 	VmixActionExecutionResults,
 } from 'timeline-state-resolver-types'
 import { PromisifyResult, t } from '../../lib'
@@ -56,6 +57,36 @@ export class vMixActionsImpl implements PromisifyResult<VmixActionExecutionResul
 		return {
 			result: ActionExecutionResultCode.Ok,
 		}
+	}
+
+	public async browserReload(payload: BrowserReloadPayload) {
+		const checkResult = this._checkBrowserAction(payload)
+		if (checkResult) return checkResult
+
+		await this.getVMixCommandSender().browserReload(payload.input)
+		return {
+			result: ActionExecutionResultCode.Ok,
+		}
+	}
+
+	private _checkBrowserAction(payload?: any): ActionExecutionResult | void {
+		const connectionError = this._checkConnectionForAction()
+		if (connectionError) return connectionError
+
+		if (!payload || typeof payload !== 'object') {
+			return {
+				result: ActionExecutionResultCode.Error,
+				response: t('Action payload is invalid'),
+			}
+		}
+
+		if (!payload.input) {
+			return {
+				result: ActionExecutionResultCode.Error,
+				response: t('No input specified'),
+			}
+		}
+		return
 	}
 
 	private _checkPresetAction(payload?: any, payloadRequired?: boolean): ActionExecutionResult | void {

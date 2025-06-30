@@ -3,6 +3,7 @@ import {
 	Mapping,
 	MappingVmixType,
 	Mappings,
+	ResolvedTimelineObjectInstanceExtended,
 	SomeMappingVmix,
 	TSRTimelineContent,
 	Timeline,
@@ -13,6 +14,7 @@ import {
 	VMixTransitionType,
 } from 'timeline-state-resolver-types'
 import {
+	PropertyWithContext,
 	TSR_INPUT_PREFIX,
 	VMixDefaultStateFactory,
 	VMixInput,
@@ -137,18 +139,18 @@ export class VMixTimelineStateConverter {
 							deviceState,
 							{
 								type: content.inputType,
-								playing: content.playing,
-								loop: content.loop,
-								position: content.seek,
-								transform: content.transform,
+								playing: this._wrapInContext(content.playing, tlObject),
+								loop: this._wrapInContext(content.loop, tlObject),
+								position: this._wrapInContext(content.seek, tlObject),
+								transform: this._wrapInContext(content.transform, tlObject),
 								layers:
 									content.layers ??
 									(content.overlays ? this._convertDeprecatedInputOverlays(content.overlays) : undefined),
-								listFilePaths: content.listFilePaths,
-								restart: content.restart,
+								listFilePaths: this._wrapInContext(content.listFilePaths, tlObject),
+								restart: this._wrapInContext(content.restart, tlObject),
 								text: content.text,
-								url: content.url,
-								index: content.index,
+								url: this._wrapInContext(content.url, tlObject),
+								index: this._wrapInContext(content.index, tlObject),
 								images: content.images,
 							},
 							{ key: mapping.options.index, filePath: content.filePath },
@@ -202,6 +204,18 @@ export class VMixTimelineStateConverter {
 			}
 		})
 		return deviceState
+	}
+
+	private _wrapInContext<T>(
+		value: T | undefined,
+		timelineObj: ResolvedTimelineObjectInstanceExtended
+	): PropertyWithContext<T> | undefined {
+		if (value === undefined) return
+		return {
+			value,
+			isLookahead: timelineObj.isLookahead,
+			timelineObjId: timelineObj.id,
+		}
 	}
 
 	private _modifyInput(
